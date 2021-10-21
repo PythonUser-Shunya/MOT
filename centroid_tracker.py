@@ -1,14 +1,11 @@
 import cv2
 from Class_centroid_tracker2 import CentroidTracker
 
-# cap = cv2.VideoCapture(r"D:\00003_Trim.mp4")
-# cap = cv2.VideoCapture(r"C:\openCv\ypppi-\movie\track.mp4")
 cap = cv2.VideoCapture(r"C:\openCv\ypppi-\movie\multi.mp4")
-# cap = cv2.VideoCapture(r"C:\openCv\ypppi-\black_00003_Trim.avi")
 fgbg = cv2.createBackgroundSubtractorMOG2()
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-fps = cap.get(cv2.CAP_PROP_FPS)
+# width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+# height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+# fps = cap.get(cv2.CAP_PROP_FPS)
 # cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('H', '2', '6', '4'))
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)  # カメラ画像の横幅を1280に設定
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
