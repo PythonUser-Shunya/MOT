@@ -6,7 +6,7 @@ import cv2
 MAX_DISTANCE = 20
 
 class CentroidTracker:
-    def __init__(self, maxDisappeared=100):
+    def __init__(self):
         # objectは番号で管理( += 1)するから0で初期化
         self.nextObjectID = 0
         # object更新用{object番号:  中心点}
@@ -15,9 +15,6 @@ class CentroidTracker:
         self.center_list = {}
         # 虫によって色を変えるため辞書型に。{object番号:  色}
         self.color_dict = {}
-        # 消滅させる用。消滅ポイント的な
-        self.disappeared = {}
-        self.maxDisappeared = maxDisappeared
 
     # register: 登録
     # 作成するもの：座標を保持するlist
@@ -58,14 +55,6 @@ class CentroidTracker:
 
     def update(self, rects):
         if len(rects) == 0:
-            # 矩形がないときはこれまでのobjectが消えた可能性があるから
-            # 現時点で保持しているobject（各虫たち）の消滅ポイントを上げる
-            for objectID in list(self.disappeared.keys()):
-                self.disappeared[objectID] += 1
-                # 最大長滅ポイントに達したらそのobjectを消滅させる
-                if self.disappeared[objectID] > self.maxDisappeared:
-                    self.deregister(objectID)
-            # オブジェクトを消す場合にはもうほかに作業が必要ないからreturn
             return self.objects
         
         # 現在のフレームの入力重心の配列を初期化
@@ -124,20 +113,6 @@ class CentroidTracker:
             unusedRows = set(range(0, D.shape[0])).difference(usedRows)
             unusedCols = set(range(0, D.shape[1])).difference(usedCols)
             
-            # オブジェクトの重心の数が入力の重心の数以上である場合は、
-            # これらのオブジェクトの一部が潜在的に消えているかどうかを確認する必要があります。
-            # if D.shape[0] >= D.shape[1]:
-                # 未使用の行インデックスをループします
-                # for row in unusedRows:
-                    # 対応する行インデックスのオブジェクトIDを取得し、
-                    # 消えたカウンターをインクリメントします
-                    # objectID = objectIDs[row]
-                    # self.disappeared[objectID] += 1
-                    # オブジェクトの登録を解除するために、
-                    # オブジェクトが「消えた」とマークされた連続フレームの数を確認します
-                    # if self.disappeared[objectID] > self.maxDisappeared:
-                    #     self.deregister(objectID)
-            # else:
             for col in unusedCols:
                 self.register(inputCentroids[col])
                 # 追跡可能なオブジェクトのセットを返します
